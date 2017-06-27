@@ -111,7 +111,7 @@ function update_category()
  * 
  */
 function image_upload()
-{
+{         
         if(!empty($_POST) && $_POST != "")
         {
             if($_FILES && isset($_FILES)){
@@ -136,15 +136,6 @@ function image_upload()
                         $imageSlideUrl = $nowSlideImage['url'];
                         $imageInformation['image_url'] = $imageSlideUrl;
                         
-                        if(is_bool($_POST['slide_status']) === true)
-                        {
-                            $slide_status = $_POST['slide_status'];
-                        }
-                        else
-                        {
-                            $slide_status = true;
-                        }
-
                         
                         if(empty($_POST['slide_width']))
                         {
@@ -165,7 +156,20 @@ function image_upload()
                             $slide_height  = $_POST['slide_height'];
                         }
 
-                                       //form data 
+                        /**
+                         * todo
+                         * fix slide status
+                         */
+                        if($_POST['slide_status'] == true)
+                        {
+                            $slide_status = 1;
+                        }
+                        else
+                        {
+                            $slide_status = 0;
+                        }
+
+                        //form data 
                         $formData = array(
                             "slide_url"             => $imageInformation['image_url'],
                             "slide_caption"         => $_POST['slide_caption'],
@@ -173,16 +177,20 @@ function image_upload()
                             "category_id"           => $_POST['category_id'],
                             "slide_status"          => $slide_status,
                             "slide_time"            => $_POST['slide_time'],
-                            "slide_update"          => $_POST['slide_update'],
+                            "slide_update"          => "null",
                             "slide_width"           => $slide_width,
                             "slide_height"           => $slide_height,
                             "slide_description"     => $_POST['slide_description'],
                             
                         );
+                        
 
                         global $wpdb, $table_prefix;
 
                         $sqlQuery = "INSERT INTO {$table_prefix}kiki_slides (ID, kiki_slide_path, kiki_slide_header, kiki_slide_content, kiki_slide_img_alt, kiki_slide_status, kiki_slide_date, kiki_last_update, kiki_slide_width, kiki_slide_height, kiki_slide_category_id) VALUES (default, '{$formData['slide_url']}', '{$formData['slide_caption']}', '{$formData['slide_description']}', '{$formData['slide_alt_description']}', '{$formData['slide_status']}', '{$formData['slide_time']}', '{$formData['slide_update']}', '{$formData['slide_width']}', '{$formData['slide_height']}', '{$formData['category_id']}')";
+                        
+          
+
                         $queryResult = $wpdb->query($sqlQuery);
                         if($queryResult)
                         {
@@ -190,7 +198,7 @@ function image_upload()
                         }
                         else
                         {  
-                            echo $sqlQuery;
+                           
                             echo "problems in uploading image";
                         }
                     }

@@ -99,19 +99,19 @@ jQuery(document).ready(function(){
        */
        jQuery("#uploadSlide").on("click", function(){
             
-            jQuery("#loading").show();
+           
             
             var selectFile              = jQuery("input[name=slide_image]");
             var imageToUpload           = selectFile[0].files[0];
             var slide_caption           = jQuery("#slide_caption").val();
-            var slide_alt_description   = jQuery("#slide_alt_description").val()
+            var slide_alt_description   = jQuery("#slide_alt_description").val();
             var category_id             = jQuery("#category_id").val(); 
             var slide_status            = jQuery("#slide_status").is(':checked');
             var slide_time              = jQuery("#slide_time").val();
             var slide_update            = jQuery("#slide_update").val();
-            var slide_width             = jQuery("#slide_width").val()
-            var slide_height            = jQuery("#slide_height").val()
-            var slide_description       = jQuery("#slide_description").val()
+            var slide_width             = jQuery("#slide_width").val();
+            var slide_height            = jQuery("#slide_height").val();
+            var slide_description       = jQuery("#slide_description").val();
             
             if(imageToUpload == "" || imageToUpload == null)
             {
@@ -125,8 +125,13 @@ jQuery(document).ready(function(){
                 return false;
             }
 
+            if(slide_time == "" || slide_time == null)
+            {
+                alert("please reload this upload form !");
+                return false;
+            }
             
-
+           
             var formData = new FormData();
             formData.append("action", "image_upload");
             formData.append("image_slide", imageToUpload);
@@ -140,22 +145,30 @@ jQuery(document).ready(function(){
             formData.append("slide_height", slide_height);
             formData.append("slide_description", slide_description);
 
-
+             
+             jQuery("#loading").fadeIn();
+          
           jQuery.ajax({
               url:phpToJsPath.ajaxurl,
               type:"POST",
-              header:{
-                Accept: "text/plain; charset=utf-8",
-                "contentType": "text/plain; charset=utf-8",
-              },
               processData:false,
               contentType:false,
               data:formData,
                 success : function(response){
-                    jQuery("#loading").hide();
+                    jQuery("#messageSuccessAddSlide").fadeIn();
+                    jQuery("#loading").fadeOut();
+                    jQuery("#slide_caption").val("");
+                    jQuery("#slide_alt_description").val("");
+                    jQuery("#category_id").val(""); 
+                    jQuery("#slide_update").val("");
+                    jQuery("#slide_width").val("");
+                    jQuery("#slide_height").val("");
+                    jQuery("#slide_description").val("");
+
                     console.log(response);
                 },
                 error : function(err){
+                     jQuery("#messageSuccessAddSlide").fadeIn();
                     console.log(err);
                 }
 

@@ -10,7 +10,7 @@ defined("ABSPATH") || exit();
 function kiki_dashboard()
 {
     global $wpdb, $table_prefix;
-    $sqlQuery = "SELECT * FROM " . $table_prefix . "kiki_slides";
+    $sqlQuery = "SELECT * FROM " . $table_prefix . "kiki_slides JOIN {$table_prefix}kiki_category ON {$table_prefix}kiki_slides.kiki_slide_category_id = {$table_prefix}kiki_category.ID;";
     $showPosts = $wpdb->get_results($sqlQuery);
     ?>
     <div class="wrap">
@@ -24,11 +24,13 @@ function kiki_dashboard()
                     <label class="screen-reader-text" for="cb-select-all-1">Select All</label>
                     <input id="cb-select-all-1" type="checkbox">
                 </td>
-                <td>Slider Title</td>
-                <td>Slider Short Code</td>
-                <td>Slider Title</td>
-                <td>Slider Short Code</td>
-                <td>Slider Title</td>
+                <td>Number of Slides</td>
+                <td>Slider Caption</td>
+                <td>Slider Categorys</td>
+                <td>Slider Status</td>
+                <td>Date</td>
+                <td>Last Update</td>
+                <td>image</td>
                 <td>Update --- Delete</td>
                 </tr>
             </thead>
@@ -36,17 +38,31 @@ function kiki_dashboard()
 
             <tbody id="the-list">
             <?php
+                $number = 1;
                 foreach($showPosts as $post):
             ?>
                 <tr>
                 <th scope="row" class="check-column"> 
                 <input id="" type="checkbox">
                 </th>
-                    <td>sample data</td>
-                    <td>sample data</td>
-                    <td>sample data</td>
-                    <td>sample data</td>
-                    <td>sample data</td>
+                    <td><?php echo $number++;?></td>
+                    <td><?php echo $post->kiki_slide_header; ?></td>
+                    <td><?php echo $post->kiki_category_name;?></td>
+                    
+                        <?php 
+                            if($post->kiki_slide_status)
+                            {
+                                echo "<td class='enable'> is Enable </td>";
+                            }
+                            else
+                            {
+                                echo "<td class='disable'> is Disable </td>";
+                            }
+                        ?>
+                    <!-- to do check empty -->
+                    <td><?php echo date('m/d/Y', $post->kiki_slide_date);?></td>
+                    <td><?php echo $post->kiki_last_update; ?></td>
+                    <td><img src="<?php echo $post->kiki_slide_path; ?>" alt="" width="60px" height="50px"></td>
                     <td><a href="#" class="update-category" data-id="" >update</a> --- <a href="#"  class="delete-category" data-id="">delete</a></td>
                 </tr>
             <?php
@@ -61,11 +77,13 @@ function kiki_dashboard()
                     <label class="screen-reader-text" for="cb-select-all-1">Select All</label>
                     <input id="cb-select-all-1" type="checkbox">
                 </td>
-                <td>Slider Title</td>
-                <td>Slider Short Code</td>
-                <td>Slider Title</td>
-                <td>Slider Short Code</td>
-                <td>Slider Title</td>
+                <td>Number of Slides</td>
+                <td>Slider Caption</td>
+                <td>Slider Categorys</td>
+                <td>Slider Status</td>
+                <td>Date</td>
+                <td>Last Update</td>
+                <td>image</td>
                 <td>Update --- Delete</td>
                 </tr>
             </tfoot>
@@ -97,7 +115,7 @@ function kiki_addNewSlide()
         <table class="form-table"> 
             <tbody>
             <tr>
-                <div id="message"    class="updated notice notice-success is-dismissible"><p>Ok, new slide add in database</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Close this</span></button></div>
+                <div id="messageSuccessAddSlide"    class="updated notice notice-success is-dismissible"><p>Ok, new slide add in database</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Close this</span></button></div>
                 <div id="errMessage" class="update-nag"><p>Sorry, have problem to add new slide in database</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Close this</span></button></div>
                 </tr>
                 <tr>

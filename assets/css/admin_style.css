@@ -1,0 +1,33 @@
+.update-nag {
+    display: none;
+}
+#message{
+    display: none;
+}
+#errMessage{
+    display: none;
+}
+#slide_image {
+    visibility: hidden;
+}
+.slide_image_style {
+    background: rgb(241, 255, 241);
+    display: block;
+    padding: 25px 5px;
+    border: 2px dotted rgba(14, 109, 131, 0.25);
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    width: 335px;
+}
+
+.green_text_color {
+    color: #0aa055;
+}
+
+.image-upload-background{
+    width: 80px;
+}
+#loading{
+    display: none;
+}

@@ -177,4 +177,38 @@ jQuery(document).ready(function(){
        });
 
 
+       // php delete slide
+       jQuery(".delete-slide").on("click", function(){
+
+           // ask a question for delete slide 
+           var askQuestion = confirm("Are you sure remove this is slide ?");
+           if(!askQuestion)
+           {
+            return false;
+           } 
+
+           var slide_id =  jQuery(this).attr("data-id");
+
+           jQuery.ajax({
+               url:phpToJsPath.ajaxurl,
+               type:"POST",
+               data:{
+                   action:"delete_slide",
+                   id:slide_id,
+               },
+               success:function(res){
+                console.log(res);
+                location.reload();
+                jQuery("")
+               },
+               error:function(err){
+                console.log(err);
+               }
+           });
+       });
+
+
+
+
+
 });

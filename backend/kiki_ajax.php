@@ -9,6 +9,7 @@ if(is_admin())
     add_action("wp_ajax_delete_category", "delete_category");
     add_action("wp_ajax_update_category", "update_category");
     add_action("wp_ajax_image_upload" , "image_upload");
+    add_action("wp_ajax_delete_slide","delete_slide");
 
 }
 
@@ -213,4 +214,78 @@ function image_upload()
             echo "please send a file";
         }
 
+}
+
+
+// delete slide 
+function delete_slide()
+{
+    if(!$_POST == "")
+    {
+        if(isset($_POST['id']))
+        {
+            $slide_id = strip_tags($_POST['id']);
+            
+            global $wpdb, $table_prefix;
+
+            $sqlQuery = "SELECT kiki_slide_path FROM {$table_prefix}kiki_slides WHERE ID = {$slide_id} LIMIT 1";
+        
+            $sqlResult = $wpdb->get_results($sqlQuery);
+            
+            if($sqlResult)
+            {
+                foreach($sqlResult as $getUrl)
+                {   
+                    $slideUrl =  $getUrl->kiki_slide_path;
+                }
+
+
+                $changeSlash = str_replace("/", "\\", $slideUrl);
+                
+                $exSlideUrl = explode("\\", $changeSlash);
+                $sliceArray = array_slice($exSlideUrl, -5,5);
+                
+
+                $imSlidePath = implode("/", $sliceArray);
+
+                $homeDir = get_home_path();
+                $fileFullPath = $homeDir.$imSlidePath;
+
+                if(file_exists($fileFullPath))
+                {
+                   $removeStatus = unlink($fileFullPath);
+                   
+                   if($removeStatus)
+                   {
+                        $deleteSqlQuery = "DELETE FROM {$table_prefix}kiki_slides WHERE ID = {$slide_id}";
+                        
+                        $deleteSqlResult = $wpdb->query($deleteSqlQuery);
+                        
+                        if($deleteSqlResult)
+                        {
+                            echo "successfully delete slide from database";
+                        }  
+                        else
+                        {
+                            echo "error '305' : error in delete file form server";
+                        } 
+                   }
+                   else
+                   {
+                    echo "problems in remove file from server !";
+                   }
+                }
+                else
+                {
+                    echo "file not exist on server !";
+                }   
+                
+                // $slideName =  end($exSlideUrl);
+                // echo PHP_EOL;
+                // echo $slideName;
+
+            }
+
+        }
+    }
 }

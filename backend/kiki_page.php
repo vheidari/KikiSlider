@@ -10,7 +10,7 @@ defined("ABSPATH") || exit();
 function kiki_dashboard()
 {
     global $wpdb, $table_prefix;
-    $sqlQuery = "SELECT * FROM " . $table_prefix . "kiki_slides JOIN {$table_prefix}kiki_category ON {$table_prefix}kiki_slides.kiki_slide_category_id = {$table_prefix}kiki_category.ID;";
+    $sqlQuery = "SELECT {$table_prefix}kiki_slides.*, kiki_category_name FROM " . $table_prefix . "kiki_slides JOIN {$table_prefix}kiki_category ON {$table_prefix}kiki_slides.kiki_slide_category_id = {$table_prefix}kiki_category.ID;";
     $showPosts = $wpdb->get_results($sqlQuery);
     ?>
     <div class="wrap">
@@ -39,6 +39,7 @@ function kiki_dashboard()
             <tbody id="the-list">
             <?php
                 $number = 1;
+                if(!empty($showPosts)):
                 foreach($showPosts as $post):
             ?>
                 <tr>
@@ -63,13 +64,19 @@ function kiki_dashboard()
                     <td><?php echo date('m/d/Y', $post->kiki_slide_date);?></td>
                     <td><?php echo $post->kiki_last_update; ?></td>
                     <td><img src="<?php echo $post->kiki_slide_path; ?>" alt="" width="60px" height="50px"></td>
-                    <td><a href="#" class="update-slide" data-id="<?php echo $post->kiki_ID;?>" >update</a> --- <a href="#"  class="delete-slide" data-id="<?php echo $post->ID;?>">delete</a></td>
+                    <td><a href="#" class="update-slide" data-id="<?php echo $post->ID;?>" >update</a> --- <a href="#"  class="delete-slide" data-id="<?php echo $post->ID;?>">delete</a></td>
                 </tr>
             <?php
                 endforeach;
+                else:
+            ?>
+            <div class="message-no-slide">
+                <p>don't have any slide. please making first a category from "Categories" menu and after that using "Add New Slide" menu to upload new slide.</p>
+            </div>
+            <?php
+                endif;
             ?>
             </tbody>
-
 
             <tfoot>
                 <tr>
@@ -90,11 +97,131 @@ function kiki_dashboard()
 
 
         </table>
-        <?php
 
-        ?>
     </div>
 
+
+    <!-- todo -->
+      <script>
+                jQuery( function() {
+                var dialog, form,
+            
+                emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+                name = jQuery( "#name" ),
+                email = jQuery( "#email" ),
+                password = jQuery( "#password" ),
+                allFields = jQuery( [] ).add( name ).add( email ).add( password ),
+                tips = jQuery( ".validateTips" );
+            
+                function updateTips( t ) {
+                tips
+                    .text( t )
+                    .addClass( "ui-state-highlight" );
+                setTimeout(function() {
+                    tips.removeClass( "ui-state-highlight", 1500 );
+                }, 500 );
+                }
+            
+                function checkLength( o, n, min, max ) {
+                if ( o.val().length > max || o.val().length < min ) {
+                    o.addClass( "ui-state-error" );
+                    updateTips( "Length of " + n + " must be between " +
+                    min + " and " + max + "." );
+                    return false;
+                } else {
+                    return true;
+                }
+                }
+            
+                function checkRegexp( o, regexp, n ) {
+                if ( !( regexp.test( o.val() ) ) ) {
+                    o.addClass( "ui-state-error" );
+                    updateTips( n );
+                    return false;
+                } else {
+                    return true;
+                }
+                }
+            
+                function addUser() {
+                var valid = true;
+                allFields.removeClass( "ui-state-error" );
+            
+                valid = valid && checkLength( name, "username", 3, 16 );
+                valid = valid && checkLength( email, "email", 6, 80 );
+                valid = valid && checkLength( password, "password", 5, 16 );
+            
+                valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+                valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+                valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+            
+                if ( valid ) {
+                    jQuery( "#users tbody" ).append( "<tr>" +
+                    "<td>" + name.val() + "</td>" +
+                    "<td>" + email.val() + "</td>" +
+                    "<td>" + password.val() + "</td>" +
+                    "</tr>" );
+                    dialog.dialog( "close" );
+                }
+                return valid;
+                }
+            
+                dialog = jQuery( "#dialog-form" ).dialog({
+                autoOpen: false,
+                height: 400,
+                width: 350,
+                modal: true,
+                buttons: {
+                    "Create an account": addUser,
+                    Cancel: function() {
+                    dialog.dialog( "close" );
+                    }
+                },
+                close: function() {
+                    form[ 0 ].reset();
+                    allFields.removeClass( "ui-state-error" );
+                }
+                });
+            
+                form = dialog.find( "form" ).on( "submit", function( event ) {
+                event.preventDefault();
+                addUser();
+                });
+            
+                jQuery( "#create-user" ).button().on( "click", function() {
+                dialog.dialog( "open" );
+                });
+            } );
+      </script>
+      
+        <div id="dialog-form" title="Create new user">
+        <p class="validateTips">All form fields are required.</p>
+        
+        <form>
+            <fieldset>
+            <label for="name">Slider Caption</label>
+            <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+        
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+        
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+        
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+        
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+        </form>
+        </div>
+        <button id="create-user">Create new user</button>
+ 
 
     <?php
 
@@ -111,6 +238,9 @@ function kiki_addNewSlide()
     <div class="wrap">
         <h1 class="wp-heading-inline">Add New Slide</h1>
         <hr>
+        
+        <div id="postbox-container-1" class="postbox-container">
+
         <form enctype="multipart/form-data" class="add-slide">
         <table class="form-table"> 
             <tbody>
@@ -177,7 +307,7 @@ function kiki_addNewSlide()
                 </tr>
                 <tr>
                     <th><label for="slide_description">Slide Description</label></th>
-                    <td><textarea rows="6" cols="35" id="slide_description"></textarea></td>
+                    <td><textarea rows="6" cols="46" id="slide_description"></textarea></td>
                 </tr>
                 <tr>
                     <th><label for="submit"></label></th>
@@ -197,7 +327,10 @@ function kiki_addNewSlide()
 
         </table>
         </form>
-
+        </div>
+        <div id="postbox-container-2" class="postbox-container">
+          <!-- todo add plugin information -->
+        </div>
     </div>
 
     <?php

@@ -63,7 +63,7 @@ function kiki_dashboard()
                     <td><?php echo date('m/d/Y', $post->kiki_slide_date);?></td>
                     <td><?php echo $post->kiki_last_update; ?></td>
                     <td><img src="<?php echo $post->kiki_slide_path; ?>" alt="" width="60px" height="50px"></td>
-                    <td><a href="#" class="update-category" data-id="" >update</a> --- <a href="#"  class="delete-category" data-id="">delete</a></td>
+                    <td><a href="#" class="update-slide" data-id="<?php echo $post->kiki_ID;?>" >update</a> --- <a href="#"  class="delete-slide" data-id="<?php echo $post->ID;?>">delete</a></td>
                 </tr>
             <?php
                 endforeach;
@@ -111,7 +111,7 @@ function kiki_addNewSlide()
     <div class="wrap">
         <h1 class="wp-heading-inline">Add New Slide</h1>
         <hr>
-        <form enctype="multipart/form-data">
+        <form enctype="multipart/form-data" class="add-slide">
         <table class="form-table"> 
             <tbody>
             <tr>
@@ -187,7 +187,10 @@ function kiki_addNewSlide()
                         <br>
                         <small class="green_text_color">Please wait kiki upload image slide</small>
                         </p>
-                        <p class="submit"><a href="#" id="uploadSlide" class="button button-primary">Upload Slide</a></p>
+                        <p class="submit">
+                        <a href="#" id="uploadSlide" class="button button-primary">Upload Slide</a>
+                        <button type="reset" id="resetForm" class="button button">Reset Form</button>
+                        </p>
                     </td>
                 </tr>
             </tbody>

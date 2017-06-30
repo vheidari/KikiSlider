@@ -4,7 +4,7 @@ defined('ABSPATH') || exit();
 
 if(is_admin())
 {
-    header( 'Content-Type: text/html; charset=utf-8' ); 
+    // header( 'Content-Type: text/html; charset=utf-8' ); 
     add_action("wp_ajax_add_category", "add_category");
     add_action("wp_ajax_delete_category", "delete_category");
     add_action("wp_ajax_update_category", "update_category");
@@ -156,11 +156,7 @@ function image_upload()
                             $slide_height  = $_POST['slide_height'];
                         }
 
-                        /**
-                         * todo
-                         * fix slide status
-                         */
-                        if($_POST['slide_status'] == true)
+                        if($_POST['slide_status'] === 'true')
                         {
                             $slide_status = 1;
                         }
@@ -189,7 +185,6 @@ function image_upload()
 
                         $sqlQuery = "INSERT INTO {$table_prefix}kiki_slides (ID, kiki_slide_path, kiki_slide_header, kiki_slide_content, kiki_slide_img_alt, kiki_slide_status, kiki_slide_date, kiki_last_update, kiki_slide_width, kiki_slide_height, kiki_slide_category_id) VALUES (default, '{$formData['slide_url']}', '{$formData['slide_caption']}', '{$formData['slide_description']}', '{$formData['slide_alt_description']}', '{$formData['slide_status']}', '{$formData['slide_time']}', '{$formData['slide_update']}', '{$formData['slide_width']}', '{$formData['slide_height']}', '{$formData['category_id']}')";
                         
-          
 
                         $queryResult = $wpdb->query($sqlQuery);
                         if($queryResult)
@@ -200,6 +195,7 @@ function image_upload()
                         {  
                            
                             echo "problems in uploading image";
+                            
                         }
                     }
                     else

@@ -130,8 +130,8 @@ jQuery(document).ready(function(){
                 alert("please reload this upload form !");
                 return false;
             }
-            
-           
+        
+
             var formData = new FormData();
             formData.append("action", "image_upload");
             formData.append("image_slide", imageToUpload);
@@ -144,6 +144,7 @@ jQuery(document).ready(function(){
             formData.append("slide_width", slide_width);
             formData.append("slide_height", slide_height);
             formData.append("slide_description", slide_description);
+
 
              
              jQuery("#loading").fadeIn();

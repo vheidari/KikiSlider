@@ -208,6 +208,136 @@ jQuery(document).ready(function(){
        });
 
 
+       /**
+        *  jqury ui update form init 
+        */
+          jQuery( function() {
+                var dialog, form, updateSlideId; 
+                
+                var slide_id            = jQuery("#upload-slide_id");
+                var slide_caption       = jQuery("#update-slide-caption");
+                var slide_description   = jQuery("#update-slide-description");
+                var slide_alt_tag       = jQuery("#update-slide-alt-tag");
+                var slide_category      = jQuery("#update-slide-category");
+                var slide_status        = jQuery("#update-slide-status");
+                var slide_time          = jQuery("#upload-slide-time");
+                var slide_update        = jQuery("#upload-slide_update");
+                var slide_width         = jQuery("#update-slide-width");
+                var slide_height        = jQuery("#update-slide-height");
+
+
+                function updateTips( t ) {
+                tips
+                    .text( t )
+                    .addClass( "ui-state-highlight" );
+                setTimeout(function() {
+                    tips.removeClass( "ui-state-highlight", 1500 );
+                }, 500 );
+                }
+            
+
+
+            
+                function updateSlide() {
+                var valid = true;
+                
+                var checkBoxIsChecked = slide_status.is(':checked');
+                
+                 jQuery.ajax({
+                     url:phpToJsPath.ajaxurl,
+                     type:"POST",
+                     data:{
+                         action:"update_form_submit",
+                         slide_id:slide_id.val(),
+                         slide_alt_tag:slide_alt_tag.val(),
+                         slide_caption:slide_caption.val(),
+                         slide_category:slide_category.val(),
+                         slide_status:checkBoxIsChecked,
+                         slide_time:slide_time.val(),
+                         slide_update:slide_update.val(),
+                         slide_width:slide_width.val(),
+                         slide_height:slide_height.val(),
+                         slide_description:slide_description.val()
+
+                     },
+                     success:function(res){
+                         location.reload();
+                         console.log(res);
+                         
+                     },
+                     error:function(err){
+                         location.reload();
+                        console.log(err); 
+                     }
+                 });
+                  console.log("click on update information");
+                }
+            
+                dialog = jQuery( "#dialog-form" ).dialog({
+                autoOpen: false,
+                height: 400,
+                width: 350,
+                title: 'Update slide information',
+                modal: true,
+                buttons: {
+                    "Update informaion": updateSlide,
+                    Cancel: function() {
+                    dialog.dialog( "close" );
+                    }
+                },
+                close: function() {
+                    form[ 0 ].reset();
+                }
+                });
+            
+                form = dialog.find( "form" ).on( "submit", function( event ) {
+                    console.log("you click on submit");
+                });
+            
+                jQuery( ".update-slide" ).on( "click", function() {
+                updateSlideId = jQuery(this).attr("data-id");
+                
+                jQuery.ajax({
+                    url:phpToJsPath.ajaxurl,
+                    type:"Post",
+                    data:{
+                        action:"get_Slide_Info_By_Id",
+                        slideId:updateSlideId
+                    },
+                    success:function(res){
+
+                        var dataRes = jQuery.parseJSON(res);
+                        
+                        slide_id.val(updateSlideId);
+                        slide_caption.val(dataRes[0].kiki_slide_header);
+                        slide_description.val(dataRes[0].kiki_slide_content);
+                        slide_alt_tag.val(dataRes[0].kiki_slide_img_alt);
+                        slide_status.val(dataRes[0].kiki_slide_status);
+                        slide_time.val(dataRes[0].kiki_slide_date);
+                        slide_update.val(Date.now());
+                        slide_category.val(dataRes[0].kiki_slide_category_id);
+                        slide_width.val(dataRes[0].kiki_slide_width);
+                        slide_height.val(dataRes[0].kiki_slide_height);
+                        
+                        // check checkbox is checked
+                        if(dataRes[0].kiki_slide_status == "1")
+                        {
+                            
+                            jQuery("#update-slide-status").attr('checked', true);
+                        }
+                        else
+                        {
+                            jQuery("#update-slide-status").removeAttr('checked');
+                        }
+                    },
+                    error:function(err){
+                        console.log(err);
+                    }
+                });
+
+                dialog.dialog( "open" );
+                });
+            } );
 
 
 

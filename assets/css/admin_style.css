@@ -57,6 +57,10 @@
     padding: 15px;
 }
 
+#update-slide-category{
+    margin-bottom:15px;
+}
+
     label, input { display:block; }
     input.text { margin-bottom:12px; width:95%; padding: .4em; }
     fieldset { padding:0; border:0; margin-top:25px; }

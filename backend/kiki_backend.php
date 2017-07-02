@@ -17,8 +17,11 @@ function kiki_admin_menu()
     add_action("load-{$kiki_dashBoard}", "kiki_loadAdminScript");
     add_action("load-{$kiki_dashBoard}", "kiki_loadCustomScript");
     add_action("load-{$kiki_addNewSlide }", "kiki_loadAdminScript");
+    add_action("load-{$kiki_addNewSlide }", "kiki_loadCustomScript");
     add_action("load-{$kiki_Categorys}", "kiki_loadAdminScript");
+    add_action("load-{$kiki_Categorys}", "kiki_loadCustomScript");
     add_action("load-{$kiki_about}", "kiki_loadAdminScript");
+    add_action("load-{$kiki_about}", "kiki_loadCustomScript");
 }
 
 /**

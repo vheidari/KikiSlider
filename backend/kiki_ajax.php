@@ -10,6 +10,8 @@ if(is_admin())
     add_action("wp_ajax_update_category", "update_category");
     add_action("wp_ajax_image_upload" , "image_upload");
     add_action("wp_ajax_delete_slide","delete_slide");
+    add_action("wp_ajax_get_Slide_Info_By_Id", "get_Slide_Info_By_Id");
+    add_action("wp_ajax_update_form_submit", "update_form_submit");
 
 }
 
@@ -34,11 +36,13 @@ function add_category()
         if($queryStatus)
         {
             echo "Ok, new category add in database";
+            exit();
             
         }
         else
         {
             echo "Sorry, have problem to add new category in database";
+            exit();
         }
         
     }
@@ -63,10 +67,12 @@ function delete_category()
        if($queryStatus)
        {
          echo "Ok, category delete form database";
+         exit();
        }
        else
        {
         echo "Sorry, have problem to delete category from database";
+        exit();
        }
     }
 }
@@ -95,11 +101,12 @@ function update_category()
         if($sqlResult)
         {
             echo "value is update";
-
+            exit();
         }
         else 
         {
             echo "have problems in update";
+            exit();
         }
     }
 }
@@ -191,17 +198,20 @@ function image_upload()
                         if($queryResult)
                         {
                             echo "slide image is upload";
+                            exit();
                         }
                         else
                         {  
                            
                             echo "problems in uploading image";
+                            exit();
                             
                         }
                     }
                     else
                     {
                         echo $nowSlideImage['error'];
+                        exit();
                     }
                 }   
                
@@ -212,6 +222,7 @@ function image_upload()
         else
         {
             echo "please send a file";
+            exit();
         }
 
 }
@@ -264,20 +275,24 @@ function delete_slide()
                         if($deleteSqlResult)
                         {
                             echo "successfully delete slide from database";
+                            exit();
                         }  
                         else
                         {
                             echo "error '305' : error in delete file form server";
+                            exit();
                         } 
                    }
                    else
                    {
                     echo "problems in remove file from server !";
+                    exit();
                    }
                 }
                 else
                 {
                     echo "file not exist on server !";
+                    exit();
                 }   
                 
                 // $slideName =  end($exSlideUrl);
@@ -286,6 +301,91 @@ function delete_slide()
 
             }
 
+        }
+    }
+}
+
+/**
+ * todo 
+ *
+ * use strinpslashes();
+ * and htmlspecialchars();
+ * 
+ */
+// get information slide by id
+function get_Slide_Info_By_Id()
+{
+    if(isset($_POST['action']) == "get_Slide_Info_By_Id")
+    {
+        if(!empty($_POST))
+        {   
+           global $wpdb, $table_prefix;
+           $slide_id = $_POST['slideId']; 
+
+           $sqlQuery = "SELECT * FROM {$table_prefix}kiki_slides WHERE ID = {$slide_id} LIMIT 1";
+           $sqlResult =  $wpdb->get_results($sqlQuery);
+
+           if($sqlResult)
+           {
+             echo json_encode($sqlResult);
+             exit();
+           }
+        }
+    }
+}
+
+
+
+/**
+ * todo 
+ *
+ * use strinpslashes();
+ * and htmlspecialchars();
+ * 
+ */
+function update_form_submit()
+{
+    if(isset($_POST["action"]) == "update_form_submit")
+    {
+
+        $slide_id           = $_POST["slide_id"];
+        $slide_alt_tag      = $_POST["slide_alt_tag"];
+        $slide_caption      = $_POST["slide_caption"];
+        $slide_category     = $_POST["slide_category"];
+        $slide_status       = $_POST["slide_status"];
+        $slide_time         = $_POST["slide_time"]; 
+        $slide_update       = $_POST["slide_update"]; 
+        $slide_width        = $_POST["slide_width"];
+        $slide_height       = $_POST["slide_height"];
+        $slide_description  = $_POST["slide_description"];
+
+        if($slide_status === 'true')
+        {
+            $slide_status = '1';
+        }
+        else
+        {
+            $slide_status = '0';
+        }
+
+        global $wpdb, $table_prefix;
+        $sqlQuery = "UPDATE {$table_prefix}kiki_slides
+                     SET kiki_slide_header = '{$slide_caption}', kiki_slide_content = '{$slide_description}',
+                      kiki_slide_img_alt = '{$slide_alt_tag}', kiki_slide_status = '{$slide_status}', kiki_slide_date = '{$slide_time}',
+                      kiki_last_update = '{$slide_update}', kiki_slide_width = '{$slide_width}', kiki_slide_height =  '{$slide_height}', 
+                      kiki_slide_category_id = '{$slide_category}' WHERE ID = '{$slide_id}' LIMIT 1";
+        
+        $sqlResult  = $wpdb->query($sqlQuery);
+        
+        if($sqlResult)
+        {
+            echo "successful slide update";
+            exit();
+        }
+        else
+        {
+            echo "problrms in update slide information";
+            exit();
         }
     }
 }

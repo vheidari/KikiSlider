@@ -64,7 +64,7 @@ function kiki_dashboard()
                     <td><?php echo date('m/d/Y', $post->kiki_slide_date);?></td>
                     <td><?php echo $post->kiki_last_update; ?></td>
                     <td><img src="<?php echo $post->kiki_slide_path; ?>" alt="" width="60px" height="50px"></td>
-                    <td><a href="#" class="update-slide" data-id="<?php echo $post->ID;?>" >update</a> --- <a href="#"  class="delete-slide" data-id="<?php echo $post->ID;?>">delete</a></td>
+                    <td><a href="#" class="update-slide" id="update-slide" data-id="<?php echo $post->ID;?>" >update</a> --- <a href="#"  class="delete-slide" data-id="<?php echo $post->ID;?>">delete</a></td>
                 </tr>
             <?php
                 endforeach;
@@ -99,129 +99,48 @@ function kiki_dashboard()
         </table>
 
     </div>
-
-
-    <!-- todo -->
-      <script>
-                jQuery( function() {
-                var dialog, form,
-            
-                emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-                name = jQuery( "#name" ),
-                email = jQuery( "#email" ),
-                password = jQuery( "#password" ),
-                allFields = jQuery( [] ).add( name ).add( email ).add( password ),
-                tips = jQuery( ".validateTips" );
-            
-                function updateTips( t ) {
-                tips
-                    .text( t )
-                    .addClass( "ui-state-highlight" );
-                setTimeout(function() {
-                    tips.removeClass( "ui-state-highlight", 1500 );
-                }, 500 );
-                }
-            
-                function checkLength( o, n, min, max ) {
-                if ( o.val().length > max || o.val().length < min ) {
-                    o.addClass( "ui-state-error" );
-                    updateTips( "Length of " + n + " must be between " +
-                    min + " and " + max + "." );
-                    return false;
-                } else {
-                    return true;
-                }
-                }
-            
-                function checkRegexp( o, regexp, n ) {
-                if ( !( regexp.test( o.val() ) ) ) {
-                    o.addClass( "ui-state-error" );
-                    updateTips( n );
-                    return false;
-                } else {
-                    return true;
-                }
-                }
-            
-                function addUser() {
-                var valid = true;
-                allFields.removeClass( "ui-state-error" );
-            
-                valid = valid && checkLength( name, "username", 3, 16 );
-                valid = valid && checkLength( email, "email", 6, 80 );
-                valid = valid && checkLength( password, "password", 5, 16 );
-            
-                valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-                valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
-                valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
-            
-                if ( valid ) {
-                    jQuery( "#users tbody" ).append( "<tr>" +
-                    "<td>" + name.val() + "</td>" +
-                    "<td>" + email.val() + "</td>" +
-                    "<td>" + password.val() + "</td>" +
-                    "</tr>" );
-                    dialog.dialog( "close" );
-                }
-                return valid;
-                }
-            
-                dialog = jQuery( "#dialog-form" ).dialog({
-                autoOpen: false,
-                height: 400,
-                width: 350,
-                modal: true,
-                buttons: {
-                    "Create an account": addUser,
-                    Cancel: function() {
-                    dialog.dialog( "close" );
-                    }
-                },
-                close: function() {
-                    form[ 0 ].reset();
-                    allFields.removeClass( "ui-state-error" );
-                }
-                });
-            
-                form = dialog.find( "form" ).on( "submit", function( event ) {
-                event.preventDefault();
-                addUser();
-                });
-            
-                jQuery( "#create-user" ).button().on( "click", function() {
-                dialog.dialog( "open" );
-                });
-            } );
-      </script>
       
         <div id="dialog-form" title="Create new user">
-        <p class="validateTips">All form fields are required.</p>
+        <p class="validateTips">For update this slide please enter informaion and click on update button</p>
         
         <form>
             <fieldset>
-            <label for="name">Slider Caption</label>
-            <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+            <input type="hidden" id="upload-slide_id" name="upload-slide_id" value="" class="regular-text"> 
+            <label for="update-slide-caption">Slide Caption</label>
+            <input type="text" name="update-slide-caption" id="update-slide-caption" value="" class="text ui-widget-content ui-corner-all" >
+            <label for="update-slide-alt-tag">Slide alt tag</label>
+            <input type="text" name="update-slide-alt-tag" id="update-slide-alt-tag" value="" class="text ui-widget-content ui-corner-all">
         
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+            <label for="update-slide-category">Select a category</label>
+            <select name="update-slide-category" id="update-slide-category">
+            <?php 
+                $sqlQueryGetCategory = "SELECT * FROM {$table_prefix}kiki_category;";
+                $slqResult = $wpdb->get_Results($sqlQueryGetCategory);
+                if(!empty($slqResult))
+                foreach($slqResult as $category): 
+            ?>
+            <option value = "<?php echo $category->ID; ?>"><?php echo $category->kiki_category_name;?></option>
+            <?php  endforeach; ?>
+            </select>
+
+            <label for="update-slide-status">Slide Status</label>
+             <p> TRUE / FALSE <input type="checkbox" name="update-slide-status" id="update-slide-status" value="" class="checbox ui-widget-content ui-corner-all"></p>
+            <input type="hidden" id="upload-slide-time" name="upload-slide-time" value="" class="regular-text"> 
+            <input type="hidden" id="upload-slide_update" name="upload-slide_update" value="" class="regular-text"> 
+            <label for="update-slide-width">Slide Width</label>
+            <input type="text" name="update-slide-width" id="update-slide-width" value="" class="text ui-widget-content ui-corner-all">
         
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
-        
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
-        
+            <label for="update-slide-height">Slide Height</label>
+            <input type="text" name="update-slide-height" id="update-slide-height" value="" class="text ui-widget-content ui-corner-all">
+            
+            <label for="update-slide-description">Slide Description</label>
+            <input type="text" name="update-slide-description" id="update-slide-description" value="" class="text ui-widget-content ui-corner-all">
+            
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
             </fieldset>
         </form>
-        </div>
-        <button id="create-user">Create new user</button>
- 
+        </div> 
 
     <?php
 

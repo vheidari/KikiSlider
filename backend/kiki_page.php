@@ -301,6 +301,7 @@ function kiki_Categorys()
                 </td>
                 <td>Category ID</td>
                 <td>Category Name</td>
+                <td>Category ShortCode</td>
                 <td>Update --- Delete</td>
                 </tr>
             </thead>
@@ -316,6 +317,7 @@ function kiki_Categorys()
                         </th>
                             <td><?php echo $id++; ?></td>
                             <td><?php echo $categoryResult->kiki_category_name; ?></td>
+                            <td><?php echo "[kiki_slider ishomepage='true' catid='{$categoryResult->ID}']";?></td>
                             <td><a href="#" class="update-category" data-id="<?php echo $categoryResult->ID; ?>" >update</a> --- <a href="#"  class="delete-category" data-id="<?php echo $categoryResult->ID; ?>">delete</a></td>
                         </tr>
                 <?php 
@@ -332,6 +334,7 @@ function kiki_Categorys()
                 </td>
                 <td>Category ID</td>
                 <td>Category Name</td>
+                <td>Category ShortCode</td>
                 <td>Update --- Delete</td>
                 </tr>
             </tfoot>

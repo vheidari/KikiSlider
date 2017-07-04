@@ -355,8 +355,52 @@ function kiki_aboutPlugin()
 {
     ?>
     <div class="wrap">
-        <h1 class="wp-heading-inline">About Kiki Slide</h1>
-        <hr>
+        <div id="postbox-container-1" class="postbox-container about" width="600">
+            <img src="<?php echo KIKI_IMG_URL . "kiki_slider.png"; ?>" alt="kiki slider logo">
+            <h1>Hi Admin, This is kiki !</h1>
+            <div class="about-description">
+                <p>
+                    Thanks for use 'kiki slider' . kiki running a simple bootstrap carousel slider, 
+                    kiki is a free and open-source project on github , secure, fast, full responsive image slider , support slider caption , sider description , seo friandly image alt tag , disable and enable image show and support wordpress shortcode. 
+                    kiki have a simple ui and many part of kiki use ajax technology.
+                </p>
+                <h3>Setting up a slider</h3>
+                <hr>
+                <p>
+                    part 1 : for running a slider first making a category form "wp-admin > KiKi Slides > Categories" address .
+                    <br>
+                    part 2 : so copy shortcode form "Category ShortCode" columns.
+                    <br>
+                    part 3 : go to "wp-admin > KiKi Slides > add New Slide" complete form an upload slide.
+                    <br>
+                    part 4 : making a page from "wp-admin > Pages > add New" and past shortcode in editor and publish new page.
+                </p>
+                <p>
+                <b>Note:</b>
+                    for show slider in your wordpress theme using "do_shortcode()" funtion for example :
+                    <br>
+                    &lt;?php do_shortcode("[kiki_slider ishomepage='true' catid='30']"); ?/&gt;
+                    <br>
+                <b>Note:</b>
+                    if your wordpress theme use bootstrap freamwork using kiki slider. if your wordpress theme don't use bootstrap
+                    kiki not work !      
+                </p>
+                <h3>Support Link</h3>
+                <hr>
+                <p>
+                    if you like kiki, you can go on github and click on star button.
+                    <br>
+                    if you have any comment or question or repoart you can go on github and create an issue.
+                    <br>
+                    <b>Contact Email : </b> <a href="mailto:vahid-heidari@hotmail.com">vahid-heidari@hotmail.com</a>
+                    <br>
+                    <b>Github Page : </b> <a href="https://github.com/vheidari/kiki-slider">https://github.com/vheidari/kiki-slider</a>
+                </p>
+            </div>
+        </div>
+        <div id="postbox-container-2" class="postbox-container">
+          <!-- todo add plugin information -->
+        </div>
     </div>
 
     <?php

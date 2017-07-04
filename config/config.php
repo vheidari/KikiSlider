@@ -19,7 +19,7 @@ defined("KIKI_FRONTEND_DIR") or define("KIKI_FRONTEND_DIR", trailingslashit( KIK
 defined("KIKI_URL") or define("KIKI_URL", trailingslashit(dirname(plugin_dir_url(__FILE__))));
 defined("KIKI_JS_URL") or define("KIKI_JS_URL" , trailingslashit( KIKI_URL . "assets/js"));
 defined("KIKI_CSS_URL") or define("KIKI_CSS_URL" , trailingslashit( KIKI_URL . "assets/css"));
-defined("KIKI_IMG_URL") or define("KIKI_IMG_URL" , trailingslashit( KIKI_URL . "config"));
+defined("KIKI_IMG_URL") or define("KIKI_IMG_URL" , trailingslashit( KIKI_URL . "assets/image"));
 defined("KIKI_ADD_NEW_SLIDE") or define("KIKI_ADD_NEW_SLIDE", admin_url( "admin.php?page=kiki-addSlide", "http" ));
 
 

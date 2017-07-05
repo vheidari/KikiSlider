@@ -48,7 +48,7 @@
 									{
 										?>
 										<div class="item <?php if($slide_active == 0){ echo "active"; } ?>">
-										  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>" <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; } ?>>
+										  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>" <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; }  if(!empty($slide->kiki_slide_width)){ echo "width='{$slide->kiki_slide_width}'"; } if(!empty($slide->kiki_slide_height)){ echo "height='{$slide->kiki_slide_height}'"; } ?>>
 										  <div class="carousel-caption">
 											<?php 
 											if(!empty($slide->kiki_slide_header))
@@ -101,7 +101,7 @@
 											?>
 											
 											<div class="item <?php if($slide_active == 0){ echo "active"; } ?>">
-											  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>" <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; } ?>>
+											  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>" <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; }  if(!empty($slide->kiki_slide_width)){ echo "width='{$slide->kiki_slide_width}'"; } if(!empty($slide->kiki_slide_height)){ echo "height='{$slide->kiki_slide_height}'"; } ?>>
 											  <div class="carousel-caption">
 												<?php 
 													if(!empty($slide->kiki_slide_header))

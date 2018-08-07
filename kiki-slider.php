@@ -19,7 +19,7 @@ require_once( KIKI_PATH . "config/config.php" );
 require_once( KIKI_FRONTEND_DIR . "kiki_frontend.php" );
 
 
- if(is_admin && is_super_admin)
+ if(is_admin() && is_super_admin())
      {
          require_once( KIKI_BACKEND_DIR . "kiki_backend.php");
          require_once( KIKI_BACKEND_DIR . "kiki_page.php");

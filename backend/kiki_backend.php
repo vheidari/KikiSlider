@@ -1,6 +1,6 @@
 <?php
 
-defined("ABSPATH") || exit();
+defined("ABSPATH") or exit();
 
 
 /**
@@ -43,7 +43,7 @@ function kiki_loadAdminScript()
 
 function kiki_loadCustomScript()
 {
-    //load jquery.min.css 
+    //load jquery.min.css
     wp_register_style("kiki_loadJqueryUICss", KIKI_JS_URL . "jquery-ui-1.12.1/jquery-ui.min.css", "jquery");
     wp_enqueue_style("kiki_loadJqueryUICss");
 

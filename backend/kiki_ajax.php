@@ -1,10 +1,10 @@
 <?php
 
-defined('ABSPATH') || exit();
+defined('ABSPATH') or exit();
 
 if(is_admin())
 {
-    // header( 'Content-Type: text/html; charset=utf-8' ); 
+    // header( 'Content-Type: text/html; charset=utf-8' );
     add_action("wp_ajax_add_category", "add_category");
     add_action("wp_ajax_delete_category", "delete_category");
     add_action("wp_ajax_update_category", "update_category");
@@ -17,43 +17,40 @@ if(is_admin())
 
 
 /**
- * todo 
+ * todo
  *
  * use strinpslashes();
  * and htmlspecialchars();
- * 
+ *
  */
 function add_category()
 {
-    if(isset($_POST) && $_POST['category_name'])
+    if(isset($_POST) && isset($_POST['category_name']))
     {
         $category_name =  sanitize_text_field($_POST["category_name"]);
         global $wpdb, $table_prefix;
         $sqlQuery = "INSERT INTO " . $table_prefix . "kiki_category (ID,kiki_category_name) VALUES (default,'" . $category_name . "')";
 
         $queryStatus = $wpdb->query($sqlQuery);
-        
+
         if($queryStatus)
         {
-            echo "Ok, new category add in database";
-            exit();
-            
+            die("Ok, new category add in database");
         }
         else
         {
-            echo "Sorry, have problem to add new category in database";
-            exit();
+            die("Sorry, have problem to add new category in database");
         }
-        
+
     }
 }
 
 /**
- * todo 
+ * todo
  *
  * use strinpslashes();
  * and htmlspecialchars();
- * 
+ *
  */
 
 function delete_category()
@@ -66,25 +63,23 @@ function delete_category()
        $queryStatus = $wpdb->query($sqlQuery);
        if($queryStatus)
        {
-         echo "Ok, category delete form database";
-         exit();
+         die("Ok, category delete form database");
        }
        else
        {
-        echo "Sorry, have problem to delete category from database";
-        exit();
+         die("Sorry, have problem to delete category from database");
        }
     }
 }
-    
+
 
 
 /**
- * todo 
+ * todo
  *
  * use strinpslashes();
  * and htmlspecialchars();
- * 
+ *
  */
 function update_category()
 {
@@ -95,31 +90,29 @@ function update_category()
         $category_name  = sanitize_text_field($_POST['category_name']);
 
         $sqlQuery = "UPDATE " . $table_prefix . "kiki_category SET kiki_category_name='" . $category_name . "' WHERE ID=" . $category_id . " LIMIT 1";
-        
+
         $sqlResult = $wpdb->query($sqlQuery);
 
         if($sqlResult)
         {
-            echo "value is update";
-            exit();
+            die("value is update");
         }
-        else 
+        else
         {
-            echo "have problems in update";
-            exit();
+            die("have problems in update");
         }
     }
 }
 
 /**
- * todo 
+ * todo
  *
  * use strinpslashes();
  * and htmlspecialchars();
- * 
+ *
  */
 function image_upload()
-{         
+{
         if(!empty($_POST) && $_POST != "")
         {
             if($_FILES && isset($_FILES)){
@@ -131,20 +124,20 @@ function image_upload()
                     "image_size" => $_FILES['image_slide']['size'],
                     "image_tmp"  => $_FILES['image_slide']['tmp_name']
                 );
-            
+
                 if(function_exists("wp_handle_upload")){
-                  
+
                     $uploadFile = $_FILES['image_slide'];
                     $overridesOption = array('test_form' => false);
-                    
+
                     $nowSlideImage =  wp_handle_upload( $uploadFile, $overridesOption );
-                    
+
                     if( ! $nowSlideImage['error']){
-                        
+
                         $imageSlideUrl = $nowSlideImage['url'];
                         $imageInformation['image_url'] = $imageSlideUrl;
-                        
-                        
+
+
                         if(empty($_POST['slide_width']))
                         {
                             $slide_width = "100%";
@@ -173,7 +166,7 @@ function image_upload()
                             $slide_status = 0;
                         }
 
-                        //form data 
+                        //form data
                         $formData = array(
                             "slide_url"             => $imageInformation['image_url'],
                             "slide_caption"         => $_POST['slide_caption'],
@@ -185,50 +178,46 @@ function image_upload()
                             "slide_width"           => $slide_width,
                             "slide_height"           => $slide_height,
                             "slide_description"     => $_POST['slide_description'],
-                            
+
                         );
-                        
+
 
                         global $wpdb, $table_prefix;
 
                         $sqlQuery = "INSERT INTO {$table_prefix}kiki_slides (ID, kiki_slide_path, kiki_slide_header, kiki_slide_content, kiki_slide_img_alt, kiki_slide_status, kiki_slide_date, kiki_last_update, kiki_slide_width, kiki_slide_height, kiki_slide_category_id) VALUES (default, '{$formData['slide_url']}', '{$formData['slide_caption']}', '{$formData['slide_description']}', '{$formData['slide_alt_description']}', '{$formData['slide_status']}', '{$formData['slide_time']}', '{$formData['slide_update']}', '{$formData['slide_width']}', '{$formData['slide_height']}', '{$formData['category_id']}')";
-                        
+
 
                         $queryResult = $wpdb->query($sqlQuery);
                         if($queryResult)
                         {
-                            echo "slide image is upload";
-                            exit();
+                            die("slide image is upload");
                         }
                         else
-                        {  
-                           
-                            echo "problems in uploading image";
-                            exit();
-                            
+                        {
+
+                            die("problems in uploading image");
+
                         }
                     }
                     else
                     {
-                        echo $nowSlideImage['error'];
-                        exit();
+                        die($nowSlideImage['error']);
                     }
-                }   
-               
-            
+                }
+
+
             }
-        
+
         }
         else
         {
-            echo "please send a file";
-            exit();
+          die("please send a file");
         }
 
 }
 
 
-// delete slide 
+// delete slide
 function delete_slide()
 {
     if(!$_POST == "")
@@ -236,26 +225,26 @@ function delete_slide()
         if(isset($_POST['id']))
         {
             $slide_id = strip_tags($_POST['id']);
-            
+
             global $wpdb, $table_prefix;
 
             $sqlQuery = "SELECT kiki_slide_path FROM {$table_prefix}kiki_slides WHERE ID = {$slide_id} LIMIT 1";
-        
+
             $sqlResult = $wpdb->get_results($sqlQuery);
-            
+
             if($sqlResult)
             {
                 foreach($sqlResult as $getUrl)
-                {   
+                {
                     $slideUrl =  $getUrl->kiki_slide_path;
                 }
 
 
                 $changeSlash = str_replace("/", "\\", $slideUrl);
-                
+
                 $exSlideUrl = explode("\\", $changeSlash);
                 $sliceArray = array_slice($exSlideUrl, -5,5);
-                
+
 
                 $imSlidePath = implode("/", $sliceArray);
 
@@ -265,39 +254,32 @@ function delete_slide()
                 if(file_exists($fileFullPath))
                 {
                    $removeStatus = unlink($fileFullPath);
-                   
+
                    if($removeStatus)
                    {
                         $deleteSqlQuery = "DELETE FROM {$table_prefix}kiki_slides WHERE ID = {$slide_id}";
-                        
+
                         $deleteSqlResult = $wpdb->query($deleteSqlQuery);
-                        
+
                         if($deleteSqlResult)
                         {
-                            echo "successfully delete slide from database";
-                            exit();
-                        }  
+                            die("successfully delete slide from database");
+                        }
                         else
                         {
-                            echo "error '305' : error in delete file form server";
-                            exit();
-                        } 
+                            die("error '305' : error in delete file form server");
+                        }
                    }
                    else
                    {
-                    echo "problems in remove file from server !";
-                    exit();
+                     die("problems in remove file from server !");
                    }
                 }
                 else
                 {
-                    echo "file not exist on server !";
-                    exit();
-                }   
-                
-                // $slideName =  end($exSlideUrl);
-                // echo PHP_EOL;
-                // echo $slideName;
+                    die("file not exist on server !");
+                }
+
 
             }
 
@@ -306,11 +288,11 @@ function delete_slide()
 }
 
 /**
- * todo 
+ * todo
  *
  * use strinpslashes();
  * and htmlspecialchars();
- * 
+ *
  */
 // get information slide by id
 function get_Slide_Info_By_Id()
@@ -318,17 +300,16 @@ function get_Slide_Info_By_Id()
     if(isset($_POST['action']) == "get_Slide_Info_By_Id")
     {
         if(!empty($_POST))
-        {   
+        {
            global $wpdb, $table_prefix;
-           $slide_id = $_POST['slideId']; 
+           $slide_id = $_POST['slideId'];
 
            $sqlQuery = "SELECT * FROM {$table_prefix}kiki_slides WHERE ID = {$slide_id} LIMIT 1";
            $sqlResult =  $wpdb->get_results($sqlQuery);
 
            if($sqlResult)
            {
-             echo json_encode($sqlResult);
-             exit();
+             wp_send_json(json_encode($sqlResult));
            }
         }
     }
@@ -337,11 +318,11 @@ function get_Slide_Info_By_Id()
 
 
 /**
- * todo 
+ * todo
  *
  * use strinpslashes();
  * and htmlspecialchars();
- * 
+ *
  */
 function update_form_submit()
 {
@@ -353,8 +334,8 @@ function update_form_submit()
         $slide_caption      = $_POST["slide_caption"];
         $slide_category     = $_POST["slide_category"];
         $slide_status       = $_POST["slide_status"];
-        $slide_time         = $_POST["slide_time"]; 
-        $slide_update       = $_POST["slide_update"]; 
+        $slide_time         = $_POST["slide_time"];
+        $slide_update       = $_POST["slide_update"];
         $slide_width        = $_POST["slide_width"];
         $slide_height       = $_POST["slide_height"];
         $slide_description  = $_POST["slide_description"];
@@ -372,20 +353,18 @@ function update_form_submit()
         $sqlQuery = "UPDATE {$table_prefix}kiki_slides
                      SET kiki_slide_header = '{$slide_caption}', kiki_slide_content = '{$slide_description}',
                       kiki_slide_img_alt = '{$slide_alt_tag}', kiki_slide_status = '{$slide_status}', kiki_slide_date = '{$slide_time}',
-                      kiki_last_update = '{$slide_update}', kiki_slide_width = '{$slide_width}', kiki_slide_height =  '{$slide_height}', 
+                      kiki_last_update = '{$slide_update}', kiki_slide_width = '{$slide_width}', kiki_slide_height =  '{$slide_height}',
                       kiki_slide_category_id = '{$slide_category}' WHERE ID = '{$slide_id}' LIMIT 1";
-        
+
         $sqlResult  = $wpdb->query($sqlQuery);
-        
+
         if($sqlResult)
         {
-            echo "successful slide update";
-            exit();
+            die("successful slide update");
         }
         else
         {
-            echo "problrms in update slide information";
-            exit();
+            die("problrms in update slide information");
         }
     }
 }

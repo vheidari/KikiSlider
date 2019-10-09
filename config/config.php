@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") || exit();
+defined("ABSPATH") or exit();
 
 /**
  * kiki plugin define configuration
@@ -21,6 +21,3 @@ defined("KIKI_JS_URL") or define("KIKI_JS_URL" , trailingslashit( KIKI_URL . "as
 defined("KIKI_CSS_URL") or define("KIKI_CSS_URL" , trailingslashit( KIKI_URL . "assets/css"));
 defined("KIKI_IMG_URL") or define("KIKI_IMG_URL" , trailingslashit( KIKI_URL . "assets/image"));
 defined("KIKI_ADD_NEW_SLIDE") or define("KIKI_ADD_NEW_SLIDE", admin_url( "admin.php?page=kiki-addSlide", "http" ));
-
-
-

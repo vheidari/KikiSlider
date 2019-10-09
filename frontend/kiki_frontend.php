@@ -1,5 +1,5 @@
-
 <?php
+
   function kiki_export_shortcode($kiki_attr)
   {
     //get shortcode attribute
@@ -7,7 +7,8 @@
           "ishomepage" => $kiki_attr,
           "catid" => $kiki_attr,
     ), $kiki_attr);
-    
+
+
   //check is not empty catid attr
   if(!empty($kiki_slider_attr['catid']))
 	{
@@ -25,15 +26,15 @@
 					 <p> 'kiki slider' not found slide. Please go to wp-admin > KIKI Slides > Add New Slide and upload slide</p>
 					 </div>
 				  <?php
-						return false;
+					return false;
 			}
-			//check ishomepage attr is true  
+			//check ishomepage attr is true
 			if($kiki_slider_attr['ishomepage'] == "true")
-			{ 
+			{
 			  	if(is_front_page())
 				  {
 
-						 ?>
+					?>
 						<div class="kiki-slider">
 
 							<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -48,13 +49,17 @@
 									{
 										?>
 										<div class="item <?php if($slide_active == 0){ echo "active"; } ?>">
-										  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>" <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; }  if(!empty($slide->kiki_slide_width)){ echo "width='{$slide->kiki_slide_width}'"; } if(!empty($slide->kiki_slide_height)){ echo "height='{$slide->kiki_slide_height}'"; } ?>>
+										  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>"
+                                <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; }
+                                      if(!empty($slide->kiki_slide_width)){ echo "width='{$slide->kiki_slide_width}'"; }
+                                      if(!empty($slide->kiki_slide_height)){ echo "height='{$slide->kiki_slide_height}'"; }
+                                ?>>
 										  <div class="carousel-caption">
-											<?php 
+											<?php
 											if(!empty($slide->kiki_slide_header))
-											  { 
+											  {
 												echo "<h3 style='color:#fff'>" . $slide->kiki_slide_header . "</h3>";
-											  } 
+											  }
 											if(!empty($slide->kiki_slide_content))
 											  {
 												 echo "<p>". $slide->kiki_slide_content ."</p>";
@@ -62,9 +67,9 @@
 											  ?>
 										  </div>
 										</div>
-										
-										<?php 
-										
+
+										<?php
+
 										$slide_active++;
 									}
 								}
@@ -75,7 +80,7 @@
 							<!-- end of myCarousel-->
 						</div>
 						<!-- end of kiki-slider -->
-						<?php 
+						<?php
 					  //end if is fontendpage
 				  }
 			}
@@ -85,7 +90,7 @@
 			  if(!is_front_page())
 			  {
 			  ?>
-			  
+
 				  <div class="kiki-slider">
 
 							<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -99,15 +104,15 @@
 										if($slide->kiki_slide_status == 1)
 										{
 											?>
-											
+
 											<div class="item <?php if($slide_active == 0){ echo "active"; } ?>">
 											  <img src="<?php if(!empty($slide)){ echo $slide->kiki_slide_path; } ?>" <?php if(!empty($slide->kiki_slide_img_alt)){ echo "alt='{$slide->kiki_slide_img_alt}'"; }  if(!empty($slide->kiki_slide_width)){ echo "width='{$slide->kiki_slide_width}'"; } if(!empty($slide->kiki_slide_height)){ echo "height='{$slide->kiki_slide_height}'"; } ?>>
 											  <div class="carousel-caption">
-												<?php 
+												<?php
 													if(!empty($slide->kiki_slide_header))
-													  { 
+													  {
 														echo "<h3 style='color:#fff'>" . $slide->kiki_slide_header . "</h3>";
-													  } 
+													  }
 													if(!empty($slide->kiki_slide_content))
 													{
 													  echo "<p>". $slide->kiki_slide_content ."</p>";
@@ -115,9 +120,9 @@
 												  ?>
 											  </div>
 											</div>
-											
-											<?php 
-											
+
+											<?php
+
 											$slide_active++;
 										}
 									}
@@ -139,7 +144,6 @@
 				<p>oh no 'kiki slider' cannot show slide. please insert true shortcode. you can go to wp-admin > KIKI Slides > Categories and find true shortcode. for example in simple mode use [kiki_slider catid='10']</p>
 			</div>
 		  <?php
-
 	 // end check is not empty catid attr
 	}
 

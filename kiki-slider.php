@@ -15,26 +15,33 @@ defined("ABSPATH") or exit();
 define("KIKI_PATH", plugin_dir_path(__FILE__));
 
 
+
 require_once( KIKI_PATH . "config/config.php" );
 require_once( KIKI_FRONTEND_DIR . "kiki_frontend.php" );
 
+  /*
+   * require plugable if wp_get_current_user is not exists
+   */
+  if(!function_exists('wp_get_current_user'))
+  {
+    require_once(ABSPATH . "/wp-includes/pluggable.php");
+  }
 
- if(is_admin() && is_super_admin())
-     {
+  if(is_admin() && is_super_admin())
+  {
          require_once( KIKI_BACKEND_DIR . "kiki_backend.php");
          require_once( KIKI_BACKEND_DIR . "kiki_page.php");
          require_once( KIKI_BACKEND_DIR . "kiki_ajax.php");
-
          add_action("admin_menu", "kiki_admin_menu");
-     }
+  }
 
 /**
- * kiki register active and deactive hook 
+ * kiki register active and deactive hook
  */
 
  register_activation_hook(__FILE__, "kiki_active");
  register_deactivation_hook(__FILE__, "kiki_deactive");
- 
+
 
  /**
   * todo
@@ -44,7 +51,7 @@ require_once( KIKI_FRONTEND_DIR . "kiki_frontend.php" );
  {
     global $table_prefix;
 
-    $sqlCreatKikiSlideTable = "       
+    $sqlCreatKikiSlideTable = "
         CREATE TABLE IF NOT EXISTS `{$table_prefix}kiki_slides` (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `kiki_slide_path` varchar(1024) COLLATE utf8_persian_ci NOT NULL,
@@ -75,6 +82,8 @@ require_once( KIKI_FRONTEND_DIR . "kiki_frontend.php" );
     // add tow kiki_slide and kiki_category table in database
     $dbDaltaKikiSlideResult     = dbDelta( $sqlCreatKikiSlideTable);
     $dbDaltaKikiCategoryResult  = dbDelta( $sqlCreatKikiCategoryTable);
+
+
  }
 
   /**
@@ -84,4 +93,3 @@ require_once( KIKI_FRONTEND_DIR . "kiki_frontend.php" );
  {
 
  }
-

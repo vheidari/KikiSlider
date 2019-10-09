@@ -1,6 +1,6 @@
 <?php
 
-defined("ABSPATH") || exit();
+defined("ABSPATH") or exit();
 
 /**
  * kiki_dashboard function
@@ -43,14 +43,14 @@ function kiki_dashboard()
                 foreach($showPosts as $post):
             ?>
                 <tr>
-                <th scope="row" class="check-column"> 
+                <th scope="row" class="check-column">
                 <input id="" type="checkbox">
                 </th>
                     <td><?php echo $number++;?></td>
                     <td><?php echo $post->kiki_slide_header; ?></td>
                     <td><?php echo $post->kiki_category_name;?></td>
-                    
-                        <?php 
+
+                        <?php
                             if($post->kiki_slide_status)
                             {
                                 echo "<td class='enable'> is Enable </td>";
@@ -99,25 +99,25 @@ function kiki_dashboard()
         </table>
 
     </div>
-      
+
         <div id="dialog-form" title="Create new user">
         <p class="validateTips">For update this slide please enter informaion and click on update button</p>
-        
+
         <form>
             <fieldset>
-            <input type="hidden" id="upload-slide_id" name="upload-slide_id" value="" class="regular-text"> 
+            <input type="hidden" id="upload-slide_id" name="upload-slide_id" value="" class="regular-text">
             <label for="update-slide-caption">Slide Caption</label>
             <input type="text" name="update-slide-caption" id="update-slide-caption" value="" class="text ui-widget-content ui-corner-all" >
             <label for="update-slide-alt-tag">Slide alt tag</label>
             <input type="text" name="update-slide-alt-tag" id="update-slide-alt-tag" value="" class="text ui-widget-content ui-corner-all">
-        
+
             <label for="update-slide-category">Select a category</label>
             <select name="update-slide-category" id="update-slide-category">
-            <?php 
+            <?php
                 $sqlQueryGetCategory = "SELECT * FROM {$table_prefix}kiki_category;";
                 $slqResult = $wpdb->get_Results($sqlQueryGetCategory);
                 if(!empty($slqResult))
-                foreach($slqResult as $category): 
+                foreach($slqResult as $category):
             ?>
             <option value = "<?php echo $category->ID; ?>"><?php echo $category->kiki_category_name;?></option>
             <?php  endforeach; ?>
@@ -125,22 +125,22 @@ function kiki_dashboard()
 
             <label for="update-slide-status">Slide Status</label>
              <p> TRUE / FALSE <input type="checkbox" name="update-slide-status" id="update-slide-status" value="" class="checbox ui-widget-content ui-corner-all"></p>
-            <input type="hidden" id="upload-slide-time" name="upload-slide-time" value="" class="regular-text"> 
-            <input type="hidden" id="upload-slide_update" name="upload-slide_update" value="" class="regular-text"> 
+            <input type="hidden" id="upload-slide-time" name="upload-slide-time" value="" class="regular-text">
+            <input type="hidden" id="upload-slide_update" name="upload-slide_update" value="" class="regular-text">
             <label for="update-slide-width">Slide Width</label>
             <input type="text" name="update-slide-width" id="update-slide-width" value="" class="text ui-widget-content ui-corner-all">
-        
+
             <label for="update-slide-height">Slide Height</label>
             <input type="text" name="update-slide-height" id="update-slide-height" value="" class="text ui-widget-content ui-corner-all">
-            
+
             <label for="update-slide-description">Slide Description</label>
             <input type="text" name="update-slide-description" id="update-slide-description" value="" class="text ui-widget-content ui-corner-all">
-            
+
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
             </fieldset>
         </form>
-        </div> 
+        </div>
 
     <?php
 
@@ -157,11 +157,11 @@ function kiki_addNewSlide()
     <div class="wrap">
         <h1 class="wp-heading-inline">Add New Slide</h1>
         <hr>
-        
+
         <div id="postbox-container-1" class="postbox-container">
 
         <form enctype="multipart/form-data" class="add-slide">
-        <table class="form-table"> 
+        <table class="form-table">
             <tbody>
             <tr>
                 <div id="messageSuccessAddSlide"    class="updated notice notice-success is-dismissible"><p>Ok, new slide add in database</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Close this</span></button></div>
@@ -173,7 +173,7 @@ function kiki_addNewSlide()
                 </tr>
                 <tr>
                     <th><label for="slide_image">Slide Image</label></th>
-                    
+
                     <td>
                         <label for="slide_image" class="slide_image_style"><img src="<?php echo KIKI_URL."assets/image/image-upload-background.svg"; ?>" class="image-upload-background" alt=""></label>
                         <input type="file" id="slide_image" name="slide_image" value="" class="regular-text"  accept="image/*">
@@ -191,7 +191,7 @@ function kiki_addNewSlide()
                         global $wpdb, $table_prefix;
                         $slqQuery = "SELECT * FROM {$table_prefix}kiki_category;";
                         $queryResults = $wpdb->get_results($slqQuery);
-                        
+
                         foreach($queryResults as $queryResult):
                     ?>
                         <option id="slide_category_id" value="<?php echo $queryResult->ID;?>"><?php echo $queryResult->kiki_category_name;?></option>
@@ -203,8 +203,8 @@ function kiki_addNewSlide()
                     <th><label for="slide_status">Slide Status</label></th>
                     <td>
                     <input type="checkbox" id="slide_status" name="slide_status" value="status" checked="checked" class="regular-text"> TRUE / FALSE
-                    <input type="hidden" id="slide_time" name="slide_time" value="<?php echo time();?>" class="regular-text"> 
-                    <input type="hidden" id="slide_update" name="slide_update" value="" class="regular-text"> 
+                    <input type="hidden" id="slide_time" name="slide_time" value="<?php echo time();?>" class="regular-text">
+                    <input type="hidden" id="slide_update" name="slide_update" value="" class="regular-text">
                     </td>
                 </tr>
                 <tr>
@@ -220,9 +220,9 @@ function kiki_addNewSlide()
                     <td>
                         <input type="text" id="slide_height" name="slide_height" value="" class="regular-text" placeholder="add a slide heigh here">
                         <br>
-                        <small class="green_text_color">if you empty this field, kiki puts height image = auto</small>    
+                        <small class="green_text_color">if you empty this field, kiki puts height image = auto</small>
                     </td>
-                   
+
                 </tr>
                 <tr>
                     <th><label for="slide_description">Slide Description</label></th>
@@ -270,11 +270,11 @@ function kiki_Categorys()
     $categoryResults = $wpdb->get_results($slqQuery);
 
     ?>
-    
+
     <div class="wrap">
         <h1 class="wp-heading-inline">Add New Slide Category</h1>
         <hr>
-        <table class="form-table"> 
+        <table class="form-table">
             <tbody>
             <tr>
                 <div id="message"    class="updated notice notice-success is-dismissible"><p>Ok, new category add in database</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Close this</span></button></div>
@@ -312,7 +312,7 @@ function kiki_Categorys()
                     foreach($categoryResults as $categoryResult):
                  ?>
                         <tr>
-                        <th scope="row" class="check-column"> 
+                        <th scope="row" class="check-column">
                         <input id="" type="checkbox">
                         </th>
                             <td><?php echo $id++; ?></td>
@@ -320,7 +320,7 @@ function kiki_Categorys()
                             <td><?php echo "[kiki_slider ishomepage='true' catid='{$categoryResult->ID}']";?></td>
                             <td><a href="#" class="update-category" data-id="<?php echo $categoryResult->ID; ?>" >update</a> --- <a href="#"  class="delete-category" data-id="<?php echo $categoryResult->ID; ?>">delete</a></td>
                         </tr>
-                <?php 
+                <?php
                     endforeach;
 
                 ?>
@@ -360,8 +360,8 @@ function kiki_aboutPlugin()
             <h1>Hi Admin, This is kiki !</h1>
             <div class="about-description">
                 <p>
-                    Thanks for use 'kiki slider' . kiki running a simple bootstrap carousel slider, 
-                    kiki is a free and open-source project on github , secure, fast, full responsive image slider , support slider caption , sider description , seo friandly image alt tag , disable and enable image show and support wordpress shortcode. 
+                    Thanks for use 'kiki slider' . kiki running a simple bootstrap carousel slider,
+                    kiki is a free and open-source project on github , secure, fast, full responsive image slider , support slider caption , sider description , seo friandly image alt tag , disable and enable image show and support wordpress shortcode.
                     kiki have a simple ui and many part of kiki use ajax technology.
                 </p>
                 <h3>Setting up a slider</h3>
@@ -383,7 +383,7 @@ function kiki_aboutPlugin()
                     <br>
                 <b>Note:</b>
                     if your wordpress theme use bootstrap freamwork using kiki slider. if your wordpress theme don't use bootstrap
-                    kiki not work !      
+                    kiki not work !
                 </p>
                 <h3>Support Link</h3>
                 <hr>
@@ -405,4 +405,3 @@ function kiki_aboutPlugin()
 
     <?php
 }
-
